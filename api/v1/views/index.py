@@ -8,10 +8,13 @@ from models import storage
 
 
 app = Flask(__name__)
+
+
 @app_views.route('/status', strict_slashes=False)
 def status():
     """Return status ok"""
     return jsonify(status="OK")
+
 
 @app_views.route('/stats', strict_slashes=False)
 def count():
@@ -24,6 +27,3 @@ def count():
     obj['states'] = storage.count('State')
     obj['users'] = storage.count('User')
     return jsonify(obj)
-
-
-
