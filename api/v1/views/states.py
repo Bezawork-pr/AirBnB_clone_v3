@@ -30,8 +30,9 @@ def post_state():
     if post_request is None:
         abort(400, "Not a JSON")
     elif 'name' in post_request:
-        state = State(post_request)
-        storgae.save()
+        state = State(**post_request)
+        storage.new(state)
+        storage.save()
         return jsonify(state.to_dict()), 201
     else:
         abort(400, "Missing name")
