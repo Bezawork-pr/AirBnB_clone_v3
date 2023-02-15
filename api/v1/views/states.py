@@ -19,7 +19,7 @@ def get_state(state_id):
     """Get state with state id"""
     state = storage.get(State, str(state_id))
     if state is None:
-        return jsonify(error="Not found"), 404
+        abort(404)
     return jsonify(state.to_dict())
 
 
@@ -28,13 +28,13 @@ def post_state():
     """Create new state"""
     post_request = request.get_json()
     if post_request is None:
-        return "Not a JSON", 404
+        abort(400, "Not a JSON")
     elif 'name' in post_request:
         state = State(post_request)
         storgae.save()
         return jsonify(state.to_dict()), 201
     else:
-        return "Missing name", 404
+        abort(400, "Missing name")
 
 
 @app_views.route('/states/<state_id>', methods=['DELETE'],
@@ -43,7 +43,7 @@ def delete_state(state_id):
     """Delete state with state id"""
     state = storage.get(State, str(state_id))
     if state is None:
-        return jsonify(error="Not found"), 404
+        abort(400)
     storage.delete(state)
     storage.save()
     return jsonify({}), 200
